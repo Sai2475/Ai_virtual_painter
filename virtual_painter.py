@@ -33,9 +33,25 @@ while True:
     lmlist = detector.findPosition(img,draw= False)
 
     if len(lmlist) != 0:
-        print(lmlist)
+        #print(lmlist)
 
+        #tip of the fingers
+        x1,y1 = lmlist[8][1:]
+        x2,y2 = lmlist[12][1:]
 
+        #check which fingers are up
+        fingers = detector.fingersup()
+        print(fingers)
+
+        #selection mode = two fingers
+        if fingers[1] and fingers[2]:
+            cv2.rectangle(img, (x1,y1-25),(x2,y2 + 25),(255,0,255),cv2.FILLED)
+            print("selection mode")
+
+        #drawing mode = one finger
+        if fingers[1] and fingers[2] == False:
+            cv2.circle(img,(x1,y1),15,(255,0,255),cv2.FILLED)
+            print("drawing mode")
 
 
 

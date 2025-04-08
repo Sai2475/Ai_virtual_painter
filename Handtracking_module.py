@@ -34,9 +34,6 @@ class handDetector():
         return img
 
     def findPosition(self, img, handNo=0, draw=True):
-        xList = []
-        yList = []
-        bbox = []
         self.lmList = []
         if self.results.multi_hand_landmarks:
             myHand = self.results.multi_hand_landmarks[handNo]
@@ -96,6 +93,25 @@ class handDetector():
 
         length = math.hypot(x2 - x1, y2 - y1)
         return length, img, [x1, y1, x2, y2, cx, cy]
+
+    def fingersup(self):
+        fingers = []
+        if len(self.lmList) == 0:
+            return fingers  # Return an empty list if no hand is detected
+
+        # Thumb
+        if self.lmList[self.tipIds[0]][1] > self.lmList[self.tipIds[0] - 1][1]:
+            fingers.append(1)
+        else:
+            fingers.append(0)
+
+        # Other Fingers
+        for id in range(1, 5):
+            if self.lmList[self.tipIds[id]][2] < self.lmList[self.tipIds[id] - 2][2]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+
 
 def main():
     pTime = 0
