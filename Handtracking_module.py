@@ -60,28 +60,24 @@ class handDetector():
 
     def fingersUp(self):
         fingers = []
-        if len(self.lmList) == 0:
-            return fingers  # Return an empty list if no hand is detected
-
         # Thumb
         if self.lmList[self.tipIds[0]][1] > self.lmList[self.tipIds[0] - 1][1]:
             fingers.append(1)
         else:
             fingers.append(0)
 
-        # Other Fingers
+        # Fingers
         for id in range(1, 5):
             if self.lmList[self.tipIds[id]][2] < self.lmList[self.tipIds[id] - 2][2]:
                 fingers.append(1)
             else:
                 fingers.append(0)
 
+            # totalFingers = fingers.count(1)
+
         return fingers
 
     def findDistance(self, p1, p2, img, draw=True, r=15, t=3):
-        if len(self.lmList) == 0:
-            return 0, img, [0, 0, 0, 0, 0, 0]  # Handle case where no hand is detected
-
         x1, y1 = self.lmList[p1][1:]
         x2, y2 = self.lmList[p2][1:]
         cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
@@ -91,42 +87,19 @@ class handDetector():
             cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
             cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
             cv2.circle(img, (cx, cy), r, (0, 0, 255), cv2.FILLED)
+            length = math.hypot(x2 - x1, y2 - y1)
 
-        length = math.hypot(x2 - x1, y2 - y1)
         return length, img, [x1, y1, x2, y2, cx, cy]
-
-    def fingersup(self):
-        fingers = []
-        if len(self.lmList) == 0:
-            return fingers  # Return an empty list if no hand is detected
-
-        # Thumb
-        if self.lmList[self.tipIds[0]][1] > self.lmList[self.tipIds[0] - 1][1]:
-            fingers.append(1)
-        else:
-            fingers.append(0)
-
-        # Other Fingers
-        for id in range(1, 5):
-            if self.lmList[self.tipIds[id]][2] < self.lmList[self.tipIds[id] - 2][2]:
-                fingers.append(1)
-            else:
-                fingers.append(0)
-
 
 def main():
     pTime = 0
-    cap = cv2.VideoCapture(0)  # Change to 0 if using a built-in webcam
+    cTime = 0
+    cap = cv2.VideoCapture(1)
     detector = handDetector()
-
     while True:
         success, img = cap.read()
-        if not success:
-            break  # If the frame is not captured properly, exit the loop
-
         img = detector.findHands(img)
         lmList, bbox = detector.findPosition(img)
-
         if len(lmList) != 0:
             print(lmList[4])
 
@@ -135,14 +108,10 @@ def main():
         pTime = cTime
 
         cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3,
-                    (255, 0, 255), 3)
+        (255, 0, 255), 3)
 
         cv2.imshow("Image", img)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
+        cv2.waitKey(1)
 
 if __name__ == "__main__":
     main()
