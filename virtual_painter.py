@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import time
 import os
+
+from numpy.distutils.conv_template import header
+
 import Handtracking_module as htm
 
 folderpath = "header"
@@ -32,7 +35,7 @@ while True:
     img = detector.findHands(img)
     lmlist = detector.findPosition(img,draw= False)
 
-    if len(lmlist) != 0:
+    if lmlist and len(lmlist) > 12:
         #print(lmlist)
 
         #tip of the fingers
@@ -47,6 +50,15 @@ while True:
         if fingers[1] and fingers[2]:
             cv2.rectangle(img, (x1,y1-25),(x2,y2 + 25),(255,0,255),cv2.FILLED)
             print("selection mode")
+            if y1 < 125:
+                if 250 < x1 < 450:
+                    header = overlaylist[0]
+                elif 550 <x1 <750:
+                    header = overlaylist[1]
+                elif 800 <x1 <950:
+                    header = overlaylist[2]
+                elif 1050 <x1 <1200:
+                    header = overlaylist[1]
 
         #drawing mode = one finger
         if fingers[1] and fingers[2] == False:
