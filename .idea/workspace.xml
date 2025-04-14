@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="efff584d-5a20-45af-abc4-2beac4d53124" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Handtracking_module.py" beforeDir="false" afterPath="$PROJECT_DIR$/Handtracking_module.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtual_painter.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtual_painter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
