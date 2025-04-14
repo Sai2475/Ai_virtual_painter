@@ -44,10 +44,10 @@ while True:
         x1, y1 = lmList[8][1:]
         x2, y2 = lmList[12][1:]
 
-        # 3. Check which fingers are up
+        # Check which fingers are up
         fingers = detector.fingersUp()
 
-        # 4. If Selection Mode - Two fingers up
+        # If Selection Mode - Two fingers up
         if fingers[1] and fingers[2]:
             print("Selection Mode")
             if y1 < 125:
@@ -65,7 +65,7 @@ while True:
                     drawColor = (0, 0, 0)
             cv2.rectangle(img, (x1, y1 - 25), (x2, y2 + 25), drawColor, cv2.FILLED)
 
-        # 5. If Drawing Mode - Only index finger up
+        # If Drawing Mode
         elif fingers[1] and not fingers[2]:
             print("Drawing Mode")
             cv2.circle(img, (x1, y1), 15, drawColor, cv2.FILLED)
@@ -87,14 +87,14 @@ while True:
         if all(fingers):
             imgCanvas = np.zeros((720, 1280, 3), np.uint8)
 
-    # Merge canvas with camera feed
+    # Merge canvas
     imgGray = cv2.cvtColor(imgCanvas, cv2.COLOR_BGR2GRAY)
     _, imgInv = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY_INV)
     imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
     img = cv2.bitwise_and(img, imgInv)
     img = cv2.bitwise_or(img, imgCanvas)
 
-    # 6. Overlay the header
+     #Overlay the header
     img[0:125, 0:1280] = header
 
     cv2.imshow("Image", img)
